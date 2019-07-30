@@ -1,0 +1,29 @@
+div {
+  width: 100px;
+  height: 100px;
+  background-color: aquamarine;
+  text-align: center;
+  line-height: 100px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.mx-auto {
+  /* 상하는 0 좌우는 auto */
+  margin: 0 auto; 
+ }
+
+ .red {
+   color: red
+ }
+
+ .body {
+   height: 100000px
+ }
+

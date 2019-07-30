@@ -1,0 +1,33 @@
+/* 1. 그룹 선택자 */
+h1, h2, h3, h4, h5, h6, .goldenrod {
+  color: goldenrod;
+}
+
+div {
+  height: 100px;
+  width: 100px;
+  border: 1px solid black;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.red {
+  background-color: red;
+}
+
+/* 인접 선택자 */
+.blue + .red + div {
+  background-color: purple;
+}
+
+/* 자식 선택자(ol밑에있는 li) */
+.parent > li {
+  color: red;
+}
+
+/* 후손 선택자(ul 밑에 있는 p 만) */
+.ancestor li{
+  color: blue
+}
