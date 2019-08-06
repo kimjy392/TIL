@@ -1,0 +1,38 @@
+/* 각 사이즈에 맞에 CSS를 조정. 밑에 있는 클래스와 같이 사용한다. */
+
+/* extra small 
+  smartphone size!
+*/
+@media (min-width: 576px) {
+  /* small
+  Galaxy Note 10
+  */
+  .col-sm-1 {
+    width: 0.833333%;
+  }
+}
+
+@media (min-width: 768px) {
+  /* medium
+  Galaxy tablet
+  */
+  .col-md-1{
+
+  }
+}
+
+@media (min-width: 992px) {
+  /* large 
+  desktop */
+  .col-lg-1 {
+
+  }
+}
+
+@media (min-width: 992px) {
+  /* extra large 
+  large desktop */
+  .col-xl-1 {
+
+  }
+}
