@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h4></h4>
+    <button id="dogsButton">댕댕이!</button>
+    <h4></h4>
+    <button id="catsButton">냥냥이!</button>
+    <div id="dogs"></div>
+    <div id="cats"></div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        let dogcount = 0
+        const getDogImage = function() {
+            axios.get('https://dog.ceo/api/breeds/image/random')
+            .then(response => {
+                const img = document.createElement('img')
+                img.style.width = '200px'
+                img.style.height = '200px'
+                img.src = response.data.message
+                const dogs = document.querySelector('#dogs')
+                dogs.appendChild(img)
+                dogcount += 1  
+                const count = dogsButton.previousElementSibling
+                count.innerText = `댕댕이 : ${dogcount}`   
+            })
+        }
+        const dogsButton = document.querySelector('#dogsButton')
+        dogsButton.addEventListener('click', getDogImage)
+
+        let catcount = 0
+        const getCatImage = function() {
+            axios.get('https://api.thecatapi.com/v1/images/search')
+            .then(response => {
+                const img = document.createElement('img')
+                img.style.width = '200px'
+                img.style.height = '200px'
+                img.src = response.data[0].url
+                const cats = document.querySelector('#cats')
+                cats.appendChild(img)
+                catcount += 1
+                const count = catsButton.previousElementSibling
+                console.log(count)
+                count.innerText = `냥냥이 : ${catcount}`
+            })
+        }
+        const catsButton = document.querySelector('#catsButton')
+        catsButton.addEventListener('click', getCatImage)
+        
+    </script>
+</body>
+</html>

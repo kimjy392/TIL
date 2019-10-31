@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="bg">  
+
+        <h1>Todo List</h1>
+        <h2 id="time"></h2>
+        <form action="" id="form">
+            <label for="input">할 일을 입력하세요</label>
+            <input type="text" id="input">
+            <button id="input-button" type="submit">+</button>
+        </form>
+        <ul id="todo-list">
+            <li> +버튼이 눌리면 리스트에 추가되도록 구현하세요. </li>
+        </ul>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // let text = document.querySelector("#input")
+        // let button = document.querySelector("#input-button")
+        // let ul = document.querySelector('#todo-list')
+
+        // button.addEventListener('click', function(event) {
+        //     if (text.value)
+        //     {
+        //         let li = document.createElement('li')
+        //         li.innerText = text.value
+        //         ul.appendChild(li)
+        //         text.value = ''
+        //     }
+        // })
+        const form = document.querySelector('#form')
+        const input = document.querySelector('#input')
+        const button = document.querySelector('#input-button')
+        const todos = document.querySelector('#todo-list')
+        const time = document.querySelector("#time")
+        form.addEventListener('submit', function(event) {
+            event.preventDefault()
+            if (input.value) {
+                    // li 하나를 새롭게 만들어서
+                    const li = document.createElement('li')
+                    // 값을 넣고
+                    console.log(event.target.previousElementSibling)
+                    // const input = event.target.previousElementSibling // 이벤트가 발생한 대상
+                    // todo-list에 붙인다.
+                    li.innerText = input.value + time.innerText
+                    const deleteButton = document.createElement('button')
+                    deleteButton.innerText = '삭제'
+                    li.appendChild(deleteButton)
+                    input.value = ''
+                    todos.appendChild(li)
+                    deleteButton.addEventListener('click', function(event) {
+                        li.remove()
+                    })
+            }
+            else {
+                alert('내용을 입력하세요!')
+            }
+        })
+        
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            // add a zero in front of numbers<10
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+            t = setTimeout(function() {
+                startTime()
+            }, 500);
+        }
+        startTime();
+
+        axios.get('https://source.unsplash.com/1920x1080/?nature,water')
+            .then(response => {
+                document.body.style.backgroundImage = `url(${response.request.responseURL})`
+                document.body.style.backgroundSize = 'cover'
+                document.body.style.backgroundPosition = 'center'
+                document.body.style.backgroundRepeat = 'no-repeat'
+            })
+    </script>
+</body>
+</html>
