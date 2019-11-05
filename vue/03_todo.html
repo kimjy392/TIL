@@ -1,57 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    .completed {
+      color: grey;
+      text-decoration-line: line-through;
+    }
+
+    .orange {
+      color: rgb(223, 199, 95);
+    }
+
+    .blue {
+      color: cornflowerblue;
+    }
+
+    div {
+      margin-left: 50%;
+    }
+  </style>
 </head>
+
 <body>
   <div id="app">
-    {{todos}}
+    <!-- {{todos}} -->
     <!-- 
       디렉티브
       v-for : 반복문
       v-if : 조건문
       같이 작성을 하게 되면, 매 반복에 if를 체크
      -->
-     <img v-bind:src="logo" alt="" width="200px">
-    <li v-for="todo in todos" v-if="!todo.completed" v-on:click="toggleCompleted(todo)"> 
+    <img v-bind:src="logo" alt="" width="200px"> <br>
+    <!-- <h1 :class="{blue: isBlue, orange: !isBlue}">오늘의 할 일</h1> -->
+    <h1 :style="{color: color, 'font-size': font}">오늘의 할 일</h1>
+    <button @click="allComplete">Complete</button>
+    <button @click="clearCompleted">Clear</button><br>
+    <input type="text" v-model="newTodo" v-on:keyup.enter="submit"> <br>
+    <select v-model="status">
+      <option value="all">모두보기</option>
+      <option value="active">할 일</option>
+      <option value="complete">완료</option>
+    </select>
+    <li style="list-style:none" v-for="todo in todosByStatus" :class="{completed: todo.completed}" :key="todo.id">
+      <!-- completed class가 todo.completed의 값에 따라 css가 적용 -->
+      <input type="checkbox" v-model="todo.completed">
       {{ todo.content }}
     </li>
-    <li v-else  v-on:click="toggleCompleted(todo)">[완료!]</li>
+    <!-- <li v-else v-on:click="toggleCompleted(todo)"><del>{{ todo.content }}</del></li> -->
   </div>
   <script>
+    const todoStorage = {
+      fetch() {  // 가져오는 작업(JSON => object 리턴)
+        return JSON.parse(localStorage.getItem('vue-todo') || "[]")
+      },
+      set(todos) {  // 로컬스토리지에 저장하는 작업(object => JSON)
+        localStorage.setItem('vue-todo', JSON.stringify(todos))
+      }
+    }
     const app = new Vue({
       el: '#app',
       data: {
+        color: 'pink',
+        font: '30px',
+        isBlue: true,
+        status: 'all', // 'active'(false), 'completed'(true)
+        newTodo: '',
         logo: 'https://lh3.googleusercontent.com/RivvntB-z-qe59FF0j9bxy6tBXZCnksHIz_EvXvaSKa039MC9IwZLTORIirdJcZZcE8',
-        todos: [
-          {
-            content : '수업 열심히 듣기',
-            completed: true
-          },
-          {
-            content : '퇴근 하기',
-            completed: false
-          },
-          {
-            content : '밥 먹기',
-            completed: false
-          },
-          {
-            content : '롤 하기',
-            completed: true
-          }
-        ]
+        todos: []
       },
       methods: {
-        toggleCompleted: function(todo) {
+        toggleCompleted: function (todo) {
           todo.completed = !todo.completed
+        },
+        // submit: () => {
+        //   console.log(this)
+        //   this.todos.push({
+        //     content = this.newTodo,
+        //     completed: false
+        //   })
+        // }
+        submit: function () {
+          console.log(this)
+          this.todos.push({
+            id: Date.now(),
+            content: this.newTodo,
+            completed: false
+          })
+          this.newTodo = ''
+        },
+
+        allComplete: function () {
+          // for(let i = 0; i < this.todos.length; i++) {
+          //   this.todos[i].completed = true
+          // }
+          this.todos.forEach(todo => {
+            todo.completed = true
+          })
+        },
+        clearCompleted() {
+          // function을 쓰지 않고 함수를 정의 할 수 있다.
+          this.todos = this.todos.filter(todo => {
+            return !todo.completed
+          })
+        },
+      },
+      computed: {     // 해당하는 함수가 계산되어 변수로 나온다. 사용할 때 () 빼버려!
+        todosByStatus() {
+          console.log('!!!!!!!')
+          // this.status 1) 'active'
+          if (this.status === 'active') {
+            return this.todos.filter(todo => !todo.completed)
+          } else if (this.status === 'complete') { // 2) 'complete'
+            return this.todos.filter(todo => todo.completed)
+          } else {
+            return this.todos // 'all'
+          }
+        },
+      },
+      watch: {  // 특정 data의 변경을 추적, 반응
+        todos: {  // todos을 바라봐!
+          handler: function() {
+            console.log('지영이 바보')
+            todoStorage.set(this.todos)
+          },
+          deep: true // 원소자체 변경, 그 원소의 변경
         }
-      }
+      },
+      mounted: function() { // vue 시작되는 시점
+        console.log('아침이 되었습니다.')
+        this.todos = todoStorage.fetch()
+      },
     })
   </script>
 </body>
+
 </html>

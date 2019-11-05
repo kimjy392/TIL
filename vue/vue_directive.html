@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ message }}</h1>
+        <!-- 반복문을 돌려서 li 태그로 이름 출력하기
+            for
+                if (같은 라인에서는 for가 우선순위가 높음)
+        -->
+        <li v-for='member in members' v-if="member.gender === 'M'">{{ member.name }} ?</li>
+        <li v-else>{{ member.name }}</li>
+        <!-- v-model 
+            data 내에 초기화가 반드시 필요!
+        -->
+        <input type="text" v-model="userText">
+       <p> 사용자 입력중....! {{ userText }}</p>
+        <!-- 속성값 : v-bind -->
+        <img v-bind:src="url" alt=""> <!-- v-bind는 생략할 수 았다. -->
+        <img :src="url" alt="">
+        <!-- 이벤트 -->
+        <button v-on:click="countUp">+++++++</button>
+        <p>{{ counter }}</p>
+        <button @click='countDown'>-------</button> <!-- v-on은 @으로 바꿀수 있다. -->
+        <!-- computed vs methods -->
+        <h2>methods : {{ dateMethods() }}</h2> <!-- 함수를 실행, 모든 data 변경시마다 계속 호출 -->
+        <h2>computed : {{ dateComputed }}</h2> <!-- 함수의 실행 결과를 계산된(computed) 변수의 값으로 저장 -->
+        <!-- v-text -->
+        <h3 v-text="message"></h3>
+        <h3>{{ message }}</h3>
+        <!-- html -->
+        {{ myTag }}
+        <span v-html="myTag"></span>
+        <!-- v-show -->
+        <p v-show="false">인성이형이 없엉</p> <!-- 랜더링은 하는데, css로 보이지 않게함
+                                                  (개발자도구확인) -->
+        <p v-if="false">태우 바보</p> <!-- 랜더링 자체를 하지 않음. -->
+
+    </div>
+    <script>
+    const app = new Vue({
+        el: '#app',
+        data: {
+            url: 'data:image/png;base64,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',
+            message: 'Hello', // app.message
+            myTag: '<h2>우왕</h2>',
+            members: [
+                {name: '경호', gender: 'M'},
+                {name: '은비', gender: 'F'},
+                {name: '태우', gender: 'M'}
+            ],
+            userText: '',
+            counter : 0
+        },
+        methods:{
+            countUp: function() {
+                this.counter++
+                console.log(this.counter)
+            },
+            countDown: function() {
+                this.counter--
+                console.log(this.counter)
+            },
+            dateMethods() {
+                return new Date()
+            }
+        },
+        computed: {
+            dateComputed() {
+                return new Date()
+            }
+        }
+    })
+    </script>
+</body>
+</html>
