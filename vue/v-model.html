@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model.trim="message"> <!-- 앞뒤의 공백이 생기지 않는다-->
+    <input type="number" v-model.number="number"> <!-- integer값으로 형변환 -->
+    <!-- value값이 저장된다. -->
+    <select v-model="jiwoo.pokemon">
+      <option value="꼬부기">꼬부기</option>
+      <option value="이상해씨">이상해씨</option>
+      <option value="파이리">파이리</option>
+    </select>
+    <!-- value값이 저장된다. -->
+    <input type="checkbox" v-model="checked">
+    <label for="water">물</label>
+    <input type="radio" value="water" id="water" v-model="type"> 
+    <label for="fire">불</label>
+    <input type="radio" value="fire" id="fire" v-model="type">
+    <label for="green">풀</label>
+    <input type="radio" value="green" id="green" v-model="type">
+  </div>
+  <script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      jiwoo: {
+        pokemon: ''
+      },
+      message: '',
+      number: 0,
+      select: '',
+      checked: true,
+      type: '',
+    },
+  })
+  </script>
+
+</body>
+</html>

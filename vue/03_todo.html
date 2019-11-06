@@ -21,9 +21,9 @@
       color: cornflowerblue;
     }
 
-    div {
-      margin-left: 50%;
-    }
+    body {
+    text-align: center;
+  }
   </style>
 </head>
 
@@ -38,7 +38,7 @@
      -->
     <img v-bind:src="logo" alt="" width="200px"> <br>
     <!-- <h1 :class="{blue: isBlue, orange: !isBlue}">오늘의 할 일</h1> -->
-    <h1 :style="{color: color, 'font-size': font}">오늘의 할 일</h1>
+    <h1 :style="{color: color, 'font-size': font}">{{ time }}</h1>
     <button @click="allComplete">Complete</button>
     <button @click="clearCompleted">Clear</button><br>
     <input type="text" v-model="newTodo" v-on:keyup.enter="submit"> <br>
@@ -66,6 +66,7 @@
     const app = new Vue({
       el: '#app',
       data: {
+        time: '',
         color: 'pink',
         font: '30px',
         isBlue: true,
@@ -109,6 +110,10 @@
             return !todo.completed
           })
         },
+        updateTime() {
+          const date = new Date()
+          this.time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+        }
       },
       computed: {     // 해당하는 함수가 계산되어 변수로 나온다. 사용할 때 () 빼버려!
         todosByStatus() {
@@ -134,7 +139,13 @@
       },
       mounted: function() { // vue 시작되는 시점
         console.log('아침이 되었습니다.')
+        // 현재 시간
+        this.updateTime()
         this.todos = todoStorage.fetch()
+        this.$options.myInterval = setInterval(this.updateTime, 1000)
+      },
+      beforeDestroy: function() {
+        clearInterval(this.$options.myInterval)
       },
     })
   </script>
