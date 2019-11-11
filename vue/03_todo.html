@@ -41,7 +41,7 @@
     <h1 :style="{color: color, 'font-size': font}">{{ time }}</h1>
     <button @click="allComplete">Complete</button>
     <button @click="clearCompleted">Clear</button><br>
-    <input type="text" v-model="newTodo" v-on:keyup.enter="submit"> <br>
+    <input type="text" v-model="newTodo" v-on:keyup.enter="submit"><br>
     <select v-model="status">
       <option value="all">모두보기</option>
       <option value="active">할 일</option>
